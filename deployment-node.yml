@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: event-planning
+  labels:
+    app: event-planning
+    tier: event-planning
+spec:
+  replicas: 1
+  selector:
+    matchLabels:  
+      app: event-planning
+  template:
+    metadata: 
+      labels:
+        app: event-planning
+    spec: 
+      containers:
+        - name: eventplanning
+          image: natashadervenic/eventplanning
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              valueFrom: 
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URI
+      restartPolicy: Always
